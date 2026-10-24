@@ -51,9 +51,6 @@
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                         <Path Data="{StaticResource IconLock}" Fill="{DynamicResource BrushTextPrimary}" Width="13" Height="13" Stretch="Uniform" Margin="0,0,8,0"/>
                         <TextBlock Text="WhatInsides" FontWeight="Medium" FontSize="13" Foreground="{DynamicResource BrushTextPrimary}" VerticalAlignment="Center"/>
-                        <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="3" Padding="5,1" Margin="8,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="TERKUNCI" FontFamily="JetBrains Mono, monospace" FontSize="8.5" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextMuted}"/>
-                        </Border>
                     </StackPanel>
 
                     <!-- Window Controls -->

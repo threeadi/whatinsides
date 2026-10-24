@@ -52,9 +52,6 @@
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
                     <Path Data="{StaticResource IconLock}" Fill="{DynamicResource BrushTextPrimary}" Width="14" Height="14" Stretch="Uniform" Margin="0,0,8,0"/>
                     <TextBlock Text="WhatInsides" FontWeight="Medium" FontSize="13.5" Foreground="{DynamicResource BrushTextPrimary}" VerticalAlignment="Center"/>
-                    <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="3" Padding="6,2" Margin="10,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="TEMA 2: MINIMAL STARK (BUN STYLE)" FontFamily="{DynamicResource FontMono}" FontSize="9" Foreground="{DynamicResource BrushTextMuted}"/>
-                    </Border>
                 </StackPanel>
 
                 <!-- Center Compact Search Box -->

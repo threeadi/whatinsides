@@ -32,9 +32,9 @@ Tidak perlu memindahkan berkas ke folder brankas khusus atau virtual disk lambat
 * **Zero-Knowledge End-to-End**: Hanya kontainer `.wisafe` yang telah terenkripsi AES-256 yang diunggah ke cloud; pihak cloud tidak dapat membaca nama dan isi dokumen.
 * **Filter Wi-Fi Only**: Menghemat kuota dengan menunda unggahan otomatis jika perangkat menggunakan koneksi berbayar/seluler.
 
-### 6. Filter Disk & Visualizer Throughput
+### 6. Filter Disk & Alokasi Partisi In-Place
 * Filter tabel berkas dinamis berdasarkan drive partisi asal (`[C:]`, `[D:]`, `[E:]`, dsb.) dengan *pill chips* dan dropdown.
-* Grafik throughput *SpeedGraph* real-time yang memvisualisasikan performa enkripsi/dekripsi secara langsung.
+* Monitor overhead dan kapasitas ruang terpakai drive secara real-time.
 
 ### 7. Tema & Navigasi Cepat
 * Dukungan penuh **Tema Gelap (Dark Mode)** dan **Tema Terang (Light Mode)** yang tersinkronisasi ke Lock Screen.
@@ -90,7 +90,6 @@ dotnet test tests/WhatInsides.Tests/WhatInsides.Tests.csproj
 ```text
 whatinsides/
 ├── Assets/                 # Ikon vektor GoogleIcons, app.ico, app.png
-├── Controls/               # Komponen custom (SpeedGraphControl, dll)
 ├── Converters/             # WPF Value Converters
 ├── Fonts/                  # Bundled TrueType Fonts (Geist, Geist Mono, JetBrains Mono)
 ├── Models/                 # Model data (AppSettings, LockedItemModel, dll)
