@@ -1,0 +1,61 @@
+## Build Results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+*.pidb
+*.booproj
+*.svclog
+*.visualstudio/
+
+## JetBrains / Rider / Resharper
+.idea/
+_ReSharper*/
+*.DotSettings.user
+
+## Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+## Test Results & Artifacts
+TestResults/
+[Tt]est[Oo]utput/
+test_output.txt
+test_sandbox_run/
+
+## WhatInsides Local Data & Encryption Containers
+*.wisafe
+*.skfs
+*.key
+wi_backup_*.json
+
+## Windows & OS Artifacts
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+## Crash / Dump files
+*.stackdump
+*.dmp
+*.crash
+
+## Package Cache
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/

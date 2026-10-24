@@ -1,0 +1,21 @@
+<Application x:Class="WhatInsides.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WhatInsides"
+             xmlns:conv="clr-namespace:WhatInsides.Converters"
+             StartupUri="LockWindow.xaml"
+             ShutdownMode="OnLastWindowClose">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Icons.xaml" />
+                <ResourceDictionary Source="Themes/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <conv:CategoryToGeometryConverter x:Key="CatToGeometryConv" />
+            <conv:CategoryToColorConverter x:Key="CatToColorConv" />
+            <conv:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisConv" />
+            <BooleanToVisibilityConverter x:Key="BoolToVisConv" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
