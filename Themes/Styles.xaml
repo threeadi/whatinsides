@@ -1,5 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <FontFamily x:Key="FontSans">/WhatInsides;component/Fonts/#Geist, Geist, Segoe UI Variable Text, Segoe UI, -apple-system, sans-serif</FontFamily>
+    <FontFamily x:Key="FontMono">/WhatInsides;component/Fonts/#JetBrains Mono, /WhatInsides;component/Fonts/#Geist Mono, JetBrains Mono, Consolas, monospace</FontFamily>
 
     <!-- DEFAULT THEME COLORS (Clean Bun / Minimal Stark from Stitch Project 14905341524887393029) -->
     <Color x:Key="ColorBgApp">#0A0A0C</Color>

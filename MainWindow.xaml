@@ -12,9 +12,10 @@
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource BrushBgApp}"
         Foreground="{DynamicResource BrushTextPrimary}"
-        FontFamily="Segoe UI Variable Text, Segoe UI, -apple-system, sans-serif"
-        TextOptions.TextFormattingMode="Display"
-        TextOptions.TextRenderingMode="ClearType"
+        FontFamily="{DynamicResource FontSans}"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        RenderOptions.ClearTypeHint="Enabled"
         UseLayoutRounding="True"
         SnapsToDevicePixels="True"
         WindowStyle="None"
@@ -52,7 +53,7 @@
                     <Path Data="{StaticResource IconLock}" Fill="{DynamicResource BrushTextPrimary}" Width="14" Height="14" Stretch="Uniform" Margin="0,0,8,0"/>
                     <TextBlock Text="WhatInsides" FontWeight="Medium" FontSize="13.5" Foreground="{DynamicResource BrushTextPrimary}" VerticalAlignment="Center"/>
                     <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="3" Padding="6,2" Margin="10,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="TEMA 2: MINIMAL STARK (BUN STYLE)" FontFamily="JetBrains Mono, monospace" FontSize="9" Foreground="{DynamicResource BrushTextMuted}"/>
+                        <TextBlock Text="TEMA 2: MINIMAL STARK (BUN STYLE)" FontFamily="{DynamicResource FontMono}" FontSize="9" Foreground="{DynamicResource BrushTextMuted}"/>
                     </Border>
                 </StackPanel>
 
@@ -143,7 +144,7 @@
 
                     <StackPanel Grid.Row="0">
                         <!-- RUANG KERJA Header -->
-                        <TextBlock Text="RUANG KERJA" FontFamily="JetBrains Mono, monospace" FontSize="10" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" Margin="8,0,0,6"/>
+                        <TextBlock Text="RUANG KERJA" FontFamily="{DynamicResource FontMono}" FontSize="10" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" Margin="8,0,0,6"/>
 
                         <!-- Navigation Items -->
                         <StackPanel Margin="0,0,0,0">
@@ -345,11 +346,11 @@
                                         <ColumnDefinition Width="100"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock x:Name="ColHeaderName" Grid.Column="0" Text="Nama ▾" FontFamily="JetBrains Mono, monospace" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonUp="ColHeader_Click" Tag="Name" ToolTip="Klik untuk mengurutkan berdasarkan Nama"/>
-                                    <TextBlock x:Name="ColHeaderDate" Grid.Column="1" Text="Tanggal Dimodifikasi" FontFamily="JetBrains Mono, monospace" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonUp="ColHeader_Click" Tag="Date" ToolTip="Klik untuk mengurutkan berdasarkan Tanggal"/>
-                                    <TextBlock x:Name="ColHeaderType" Grid.Column="2" Text="Tipe" FontFamily="JetBrains Mono, monospace" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonUp="ColHeader_Click" Tag="Type" ToolTip="Klik untuk mengurutkan berdasarkan Tipe Berkas"/>
-                                    <TextBlock x:Name="ColHeaderSize" Grid.Column="3" Text="Ukuran" FontFamily="JetBrains Mono, monospace" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" TextAlignment="Right" Cursor="Hand" MouseLeftButtonUp="ColHeader_Click" Tag="Size" ToolTip="Klik untuk mengurutkan berdasarkan Ukuran"/>
-                                    <TextBlock Grid.Column="4" Text="Status / Aksi" FontFamily="JetBrains Mono, monospace" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" TextAlignment="Right"/>
+                                    <TextBlock x:Name="ColHeaderName" Grid.Column="0" Text="Nama ▾" FontFamily="{DynamicResource FontMono}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonUp="ColHeader_Click" Tag="Name" ToolTip="Klik untuk mengurutkan berdasarkan Nama"/>
+                                    <TextBlock x:Name="ColHeaderDate" Grid.Column="1" Text="Tanggal Dimodifikasi" FontFamily="{DynamicResource FontMono}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonUp="ColHeader_Click" Tag="Date" ToolTip="Klik untuk mengurutkan berdasarkan Tanggal"/>
+                                    <TextBlock x:Name="ColHeaderType" Grid.Column="2" Text="Tipe" FontFamily="{DynamicResource FontMono}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonUp="ColHeader_Click" Tag="Type" ToolTip="Klik untuk mengurutkan berdasarkan Tipe Berkas"/>
+                                    <TextBlock x:Name="ColHeaderSize" Grid.Column="3" Text="Ukuran" FontFamily="{DynamicResource FontMono}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" TextAlignment="Right" Cursor="Hand" MouseLeftButtonUp="ColHeader_Click" Tag="Size" ToolTip="Klik untuk mengurutkan berdasarkan Ukuran"/>
+                                    <TextBlock Grid.Column="4" Text="Status / Aksi" FontFamily="{DynamicResource FontMono}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" TextAlignment="Right"/>
                                 </Grid>
                             </Border>
 
@@ -393,12 +394,12 @@
                                                     <!-- Name -->
                                                     <TextBlock Grid.Row="1" Text="{Binding Name}" FontWeight="Medium" FontSize="12" Foreground="{DynamicResource BrushTextPrimary}" TextTrimming="CharacterEllipsis" Margin="0,0,0,2"/>
                                                     <!-- Path -->
-                                                    <TextBlock Grid.Row="2" Text="{Binding OriginalPath}" FontFamily="JetBrains Mono, monospace" FontSize="9.5" Foreground="{DynamicResource BrushTextFaint}" TextTrimming="CharacterEllipsis" Margin="0,0,0,10"/>
+                                                    <TextBlock Grid.Row="2" Text="{Binding OriginalPath}" FontFamily="{DynamicResource FontMono}" FontSize="9.5" Foreground="{DynamicResource BrushTextFaint}" TextTrimming="CharacterEllipsis" Margin="0,0,0,10"/>
                                                     <!-- Bottom: Size, Date & Actions -->
                                                     <Grid Grid.Row="3">
                                                         <StackPanel VerticalAlignment="Center">
-                                                            <TextBlock Text="{Binding FormattedSize}" FontFamily="JetBrains Mono, monospace" FontSize="10" Foreground="{DynamicResource BrushTextSecondary}"/>
-                                                            <TextBlock Text="{Binding FormattedDate}" FontFamily="JetBrains Mono, monospace" FontSize="9" Foreground="{DynamicResource BrushTextFaint}"/>
+                                                            <TextBlock Text="{Binding FormattedSize}" FontFamily="{DynamicResource FontMono}" FontSize="10" Foreground="{DynamicResource BrushTextSecondary}"/>
+                                                            <TextBlock Text="{Binding FormattedDate}" FontFamily="{DynamicResource FontMono}" FontSize="9" Foreground="{DynamicResource BrushTextFaint}"/>
                                                         </StackPanel>
                                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                                             <Button ToolTip="Buka Sementara" Click="BtnItemPreview_Click" Tag="{Binding}" Style="{StaticResource StarkSecondaryButton}" Width="24" Height="24" Padding="0" Margin="0,0,4,0">
@@ -492,15 +493,15 @@
                                                     <TextBlock Text="{Binding Name}" FontWeight="Medium" FontSize="12.5" Foreground="{DynamicResource BrushTextPrimary}"/>
                                                     <StackPanel Orientation="Horizontal" Margin="0,1,0,0">
                                                         <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="2" Padding="4,0" Margin="0,0,6,0" VerticalAlignment="Center">
-                                                            <TextBlock Text="{Binding DriveLetter}" FontFamily="JetBrains Mono, monospace" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextSecondary}"/>
+                                                            <TextBlock Text="{Binding DriveLetter}" FontFamily="{DynamicResource FontMono}" FontSize="9" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextSecondary}"/>
                                                         </Border>
-                                                        <TextBlock Text="{Binding OriginalPath}" FontFamily="JetBrains Mono, monospace" FontSize="10.5" Foreground="{DynamicResource BrushTextFaint}" TextTrimming="CharacterEllipsis" MaxWidth="280" VerticalAlignment="Center"/>
+                                                        <TextBlock Text="{Binding OriginalPath}" FontFamily="{DynamicResource FontMono}" FontSize="10.5" Foreground="{DynamicResource BrushTextFaint}" TextTrimming="CharacterEllipsis" MaxWidth="280" VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                 </StackPanel>
                                             </StackPanel>
 
                                             <!-- Date -->
-                                            <TextBlock Grid.Column="1" Text="{Binding FormattedDate}" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextMuted}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding FormattedDate}" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextMuted}" VerticalAlignment="Center"/>
 
                                             <!-- Type Badge -->
                                             <Border Grid.Column="2" HorizontalAlignment="Left" Background="{DynamicResource BrushBgApp}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
@@ -508,7 +509,7 @@
                                             </Border>
 
                                             <!-- Size -->
-                                            <TextBlock Grid.Column="3" Text="{Binding FormattedSize}" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextSecondary}" VerticalAlignment="Center" TextAlignment="Right"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding FormattedSize}" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextSecondary}" VerticalAlignment="Center" TextAlignment="Right"/>
 
                                             <!-- Action Buttons (Preview / Restore) -->
                                             <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -539,7 +540,7 @@
                             <Border Grid.Row="2" Background="{DynamicResource BrushBgApp}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="0,1,0,0" Padding="16,0">
                                 <Grid VerticalAlignment="Center">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock x:Name="TxtFooterCount" Text="0 item" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextMuted}"/>
+                                        <TextBlock x:Name="TxtFooterCount" Text="0 item" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextMuted}"/>
                                         <TextBlock Text=" | In-place proteksi aktif tanpa membebani drive C:\" FontSize="11" Foreground="{DynamicResource BrushTextFaint}" Margin="6,0,0,0"/>
                                     </StackPanel>
                                 </Grid>
@@ -612,13 +613,13 @@
                                         <Button x:Name="BtnPickFileNewLock" Click="BtnPickFileNewLock_Click" Style="{StaticResource StarkSecondaryButton}" Height="30" Margin="0,0,8,0">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <Path Data="{StaticResource IconDescription}" Fill="{DynamicResource BrushTextMuted}" Width="13" Height="13" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="Pilih File" FontSize="11.5" FontFamily="JetBrains Mono, monospace" VerticalAlignment="Center"/>
+                                                <TextBlock Text="Pilih File" FontSize="11.5" FontFamily="{DynamicResource FontMono}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
                                         <Button x:Name="BtnPickFolderNewLock" Click="BtnPickFolderNewLock_Click" Style="{StaticResource StarkSecondaryButton}" Height="30">
                                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                 <Path Data="{StaticResource IconFolderOpen}" Fill="{DynamicResource BrushTextMuted}" Width="13" Height="13" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                <TextBlock Text="Pilih Folder" FontSize="11.5" FontFamily="JetBrains Mono, monospace" VerticalAlignment="Center"/>
+                                                <TextBlock Text="Pilih Folder" FontSize="11.5" FontFamily="{DynamicResource FontMono}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
@@ -628,8 +629,8 @@
                             <!-- Target Files List (Compact Monospace bun-style) -->
                             <Grid Margin="0,0,0,8">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="OBJEK TERPILIH" FontFamily="JetBrains Mono, monospace" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}"/>
-                                    <TextBlock x:Name="TxtNewLockTargetCount" Text="(0)" FontFamily="JetBrains Mono, monospace" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}" Margin="6,0,0,0"/>
+                                    <TextBlock Text="OBJEK TERPILIH" FontFamily="{DynamicResource FontMono}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}"/>
+                                    <TextBlock x:Name="TxtNewLockTargetCount" Text="(0)" FontFamily="{DynamicResource FontMono}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}" Margin="6,0,0,0"/>
                                 </StackPanel>
                                 <Button x:Name="BtnClearAllQueue" Click="BtnClearAllQueue_Click" Style="{StaticResource StarkGhostButton}" Height="22" Padding="6,2" HorizontalAlignment="Right" Content="Kosongkan Antrean" FontSize="10.5" Visibility="Collapsed"/>
                             </Grid>
@@ -653,7 +654,7 @@
                                                         <TextBlock Text="{Binding Name}" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}" VerticalAlignment="Center"/>
                                                         <TextBlock Text="{Binding DirectoryPath}" FontSize="11" Foreground="{DynamicResource BrushTextFaint}" Margin="8,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="320"/>
                                                     </StackPanel>
-                                                    <TextBlock Text="{Binding FormattedSize}" Grid.Column="1" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextMuted}" VerticalAlignment="Center" Margin="12,0"/>
+                                                    <TextBlock Text="{Binding FormattedSize}" Grid.Column="1" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextMuted}" VerticalAlignment="Center" Margin="12,0"/>
                                                     <Button Click="BtnRemoveQueueItem_Click" Tag="{Binding}" Grid.Column="2" Width="24" Height="24" Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="Hapus dari antrean">
                                                         <Path Data="{StaticResource IconClose}" Fill="{DynamicResource BrushTextFaint}" Width="10" Height="10" Stretch="Uniform"/>
                                                     </Button>
@@ -670,7 +671,7 @@
                             </StackPanel>
 
                             <!-- Mode Picker Header -->
-                            <TextBlock Text="PILIH MODE PROTEKSI" FontFamily="JetBrains Mono, monospace" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" Margin="0,0,0,12"/>
+                            <TextBlock Text="PILIH MODE PROTEKSI" FontFamily="{DynamicResource FontMono}" FontSize="11" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}" Margin="0,0,0,12"/>
 
                             <!-- Side-by-side Cards -->
                             <Grid Margin="0,0,0,20">
@@ -691,7 +692,7 @@
                                                 <TextBlock Text="Mode Cepat" FontSize="13.5" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextPrimary}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                             <Border Background="{DynamicResource BrushBgApp}" BorderBrush="{DynamicResource BrushBorder}" BorderThickness="1" CornerRadius="4" Padding="6,2" HorizontalAlignment="Right">
-                                                <TextBlock Text="&lt;0.1s" FontFamily="JetBrains Mono, monospace" FontSize="10" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                                <TextBlock Text="&lt;0.1s" FontFamily="{DynamicResource FontMono}" FontSize="10" Foreground="{DynamicResource BrushTextPrimary}"/>
                                             </Border>
                                         </Grid>
                                         <TextBlock Text="Penguncian instan tanpa proses duplikasi atau pemindahan." FontSize="12" Foreground="{DynamicResource BrushTextMuted}" LineHeight="18"/>
@@ -709,7 +710,7 @@
                                                 <TextBlock Text="Mode Enkripsi" FontSize="13.5" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextMuted}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                             <Border Background="{DynamicResource BrushBgApp}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="4" Padding="6,2" HorizontalAlignment="Right">
-                                                <TextBlock Text="AES-256" FontFamily="JetBrains Mono, monospace" FontSize="10" Foreground="{DynamicResource BrushTextMuted}"/>
+                                                <TextBlock Text="AES-256" FontFamily="{DynamicResource FontMono}" FontSize="10" Foreground="{DynamicResource BrushTextMuted}"/>
                                             </Border>
                                         </Grid>
                                         <TextBlock Text="Enkripsi penuh untuk keamanan dokumen sensitif." FontSize="12" Foreground="{DynamicResource BrushTextMuted}" LineHeight="18"/>
@@ -766,7 +767,7 @@
                                     <StackPanel Grid.Column="0" Margin="0,0,16,0">
                                         <TextBlock Text="Menu Klik Kanan Explorer" FontSize="13.5" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}" Margin="0,0,0,4"/>
                                         <TextBlock Text="Aktifkan pintasan langsung di Windows Explorer untuk mengunci berkas atau folder secara instan tanpa membuka jendela aplikasi utama." FontSize="12.5" Foreground="{DynamicResource BrushTextMuted}" TextWrapping="Wrap" LineHeight="18" Margin="0,0,0,8"/>
-                                        <TextBlock Text="HKCU\Software\Classes\*\shell\WhatInsides" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextFaint}"/>
+                                        <TextBlock Text="HKCU\Software\Classes\*\shell\WhatInsides" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextFaint}"/>
                                     </StackPanel>
                                     <CheckBox x:Name="ChkShellToggle" Click="ChkShellToggle_Click" Grid.Column="1" Style="{StaticResource StarkToggleSwitch}" VerticalAlignment="Center"/>
                                 </Grid>
@@ -791,15 +792,15 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Column="0">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="C:\" FontFamily="JetBrains Mono, monospace" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                                    <TextBlock Text="C:\" FontFamily="{DynamicResource FontMono}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextPrimary}"/>
                                                     <TextBlock x:Name="TxtShellDriveCLabel" Text="SSD Sistem" FontSize="12" Foreground="{DynamicResource BrushTextMuted}" Margin="8,0,0,0"/>
                                                 </StackPanel>
-                                                <TextBlock x:Name="TxtShellDriveCLocked" Text="0 MB Overhead" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="#10B981" Margin="0,2,0,0"/>
+                                                <TextBlock x:Name="TxtShellDriveCLocked" Text="0 MB Overhead" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="#10B981" Margin="0,2,0,0"/>
                                             </StackPanel>
                                             <StackPanel Grid.Column="1" Margin="16,0,24,0" VerticalAlignment="Center">
                                                 <Grid Margin="0,0,0,6">
-                                                    <TextBlock x:Name="TxtShellDriveCUsage" Text="72 GB used" FontFamily="JetBrains Mono, monospace" FontSize="10.5" Foreground="{DynamicResource BrushTextMuted}"/>
-                                                    <TextBlock x:Name="TxtShellDriveCTotalPercent" Text="256 GB total (28%)" FontFamily="JetBrains Mono, monospace" FontSize="10.5" Foreground="{DynamicResource BrushTextFaint}" HorizontalAlignment="Right"/>
+                                                    <TextBlock x:Name="TxtShellDriveCUsage" Text="72 GB used" FontFamily="{DynamicResource FontMono}" FontSize="10.5" Foreground="{DynamicResource BrushTextMuted}"/>
+                                                    <TextBlock x:Name="TxtShellDriveCTotalPercent" Text="256 GB total (28%)" FontFamily="{DynamicResource FontMono}" FontSize="10.5" Foreground="{DynamicResource BrushTextFaint}" HorizontalAlignment="Right"/>
                                                 </Grid>
                                                 <Border Height="4" Background="{DynamicResource BrushBgApp}" CornerRadius="2">
                                                     <Grid>
@@ -811,7 +812,7 @@
                                                     </Grid>
                                                 </Border>
                                             </StackPanel>
-                                            <TextBlock x:Name="TxtShellDriveCItemCount" Text="0 Berkas Terkunci" FontFamily="JetBrains Mono, monospace" FontSize="11.5" Foreground="{DynamicResource BrushTextMuted}" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="TxtShellDriveCItemCount" Text="0 Berkas Terkunci" FontFamily="{DynamicResource FontMono}" FontSize="11.5" Foreground="{DynamicResource BrushTextMuted}" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </Border>
 
@@ -825,15 +826,15 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Column="0">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="D:\" FontFamily="JetBrains Mono, monospace" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                                    <TextBlock Text="D:\" FontFamily="{DynamicResource FontMono}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextPrimary}"/>
                                                     <TextBlock x:Name="TxtShellDriveDLabel" Text="Volume Data" FontSize="12" Foreground="{DynamicResource BrushTextMuted}" Margin="8,0,0,0"/>
                                                 </StackPanel>
-                                                <TextBlock x:Name="TxtShellDriveDLocked" Text="285.5 GB Terkunci" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextPrimary}" Margin="0,2,0,0"/>
+                                                <TextBlock x:Name="TxtShellDriveDLocked" Text="285.5 GB Terkunci" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextPrimary}" Margin="0,2,0,0"/>
                                             </StackPanel>
                                             <StackPanel Grid.Column="1" Margin="16,0,24,0" VerticalAlignment="Center">
                                                 <Grid Margin="0,0,0,6">
-                                                    <TextBlock x:Name="TxtShellDriveDUsage" Text="612 GB used" FontFamily="JetBrains Mono, monospace" FontSize="10.5" Foreground="{DynamicResource BrushTextPrimary}"/>
-                                                    <TextBlock x:Name="TxtShellDriveDTotalPercent" Text="1024 GB total (60%)" FontFamily="JetBrains Mono, monospace" FontSize="10.5" Foreground="{DynamicResource BrushTextFaint}" HorizontalAlignment="Right"/>
+                                                    <TextBlock x:Name="TxtShellDriveDUsage" Text="612 GB used" FontFamily="{DynamicResource FontMono}" FontSize="10.5" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                                    <TextBlock x:Name="TxtShellDriveDTotalPercent" Text="1024 GB total (60%)" FontFamily="{DynamicResource FontMono}" FontSize="10.5" Foreground="{DynamicResource BrushTextFaint}" HorizontalAlignment="Right"/>
                                                 </Grid>
                                                 <Border Height="4" Background="{DynamicResource BrushBgApp}" CornerRadius="2">
                                                     <Grid>
@@ -845,7 +846,7 @@
                                                     </Grid>
                                                 </Border>
                                             </StackPanel>
-                                            <TextBlock x:Name="TxtDriveDItemCount" Text="11 Item Terkunci" FontFamily="JetBrains Mono, monospace" FontSize="11.5" Foreground="{DynamicResource BrushTextPrimary}" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="TxtDriveDItemCount" Text="11 Item Terkunci" FontFamily="{DynamicResource FontMono}" FontSize="11.5" Foreground="{DynamicResource BrushTextPrimary}" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </Border>
 
@@ -859,15 +860,15 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Grid.Column="0">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="E:\" FontFamily="JetBrains Mono, monospace" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                                    <TextBlock Text="E:\" FontFamily="{DynamicResource FontMono}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextPrimary}"/>
                                                     <TextBlock x:Name="TxtShellDriveELabel" Text="Penyimpanan Eksternal" FontSize="12" Foreground="{DynamicResource BrushTextMuted}" Margin="8,0,0,0"/>
                                                 </StackPanel>
-                                                <TextBlock x:Name="TxtShellDriveELocked" Text="42.9 GB Terkunci" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextMuted}" Margin="0,2,0,0"/>
+                                                <TextBlock x:Name="TxtShellDriveELocked" Text="42.9 GB Terkunci" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextMuted}" Margin="0,2,0,0"/>
                                             </StackPanel>
                                             <StackPanel Grid.Column="1" Margin="16,0,24,0" VerticalAlignment="Center">
                                                 <Grid Margin="0,0,0,6">
-                                                    <TextBlock x:Name="TxtShellDriveEUsage" Text="148 GB used" FontFamily="JetBrains Mono, monospace" FontSize="10.5" Foreground="{DynamicResource BrushTextMuted}"/>
-                                                    <TextBlock x:Name="TxtShellDriveETotalPercent" Text="500 GB total (30%)" FontFamily="JetBrains Mono, monospace" FontSize="10.5" Foreground="{DynamicResource BrushTextFaint}" HorizontalAlignment="Right"/>
+                                                    <TextBlock x:Name="TxtShellDriveEUsage" Text="148 GB used" FontFamily="{DynamicResource FontMono}" FontSize="10.5" Foreground="{DynamicResource BrushTextMuted}"/>
+                                                    <TextBlock x:Name="TxtShellDriveETotalPercent" Text="500 GB total (30%)" FontFamily="{DynamicResource FontMono}" FontSize="10.5" Foreground="{DynamicResource BrushTextFaint}" HorizontalAlignment="Right"/>
                                                 </Grid>
                                                 <Border Height="4" Background="{DynamicResource BrushBgApp}" CornerRadius="2">
                                                     <Grid>
@@ -879,7 +880,7 @@
                                                     </Grid>
                                                 </Border>
                                             </StackPanel>
-                                            <TextBlock x:Name="TxtShellDriveEItemCount" Text="3 Item Terkunci" FontFamily="JetBrains Mono, monospace" FontSize="11.5" Foreground="{DynamicResource BrushTextMuted}" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                            <TextBlock x:Name="TxtShellDriveEItemCount" Text="3 Item Terkunci" FontFamily="{DynamicResource FontMono}" FontSize="11.5" Foreground="{DynamicResource BrushTextMuted}" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </Border>
                                 </StackPanel>
@@ -931,11 +932,11 @@
                                 <StackPanel>
                                     <Border Margin="0,0,0,8" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="0,0,0,1" Padding="0,0,0,6">
                                         <Grid>
-                                            <TextBlock Text="STATUS LOG" FontFamily="JetBrains Mono, monospace" FontSize="10" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}"/>
-                                            <TextBlock x:Name="TxtShellLogTime" Text="12:00:00 UTC" FontFamily="JetBrains Mono, monospace" FontSize="10" Foreground="{DynamicResource BrushTextFaint}" HorizontalAlignment="Right"/>
+                                            <TextBlock Text="STATUS LOG" FontFamily="{DynamicResource FontMono}" FontSize="10" FontWeight="Medium" Foreground="{DynamicResource BrushTextFaint}"/>
+                                            <TextBlock x:Name="TxtShellLogTime" Text="12:00:00 UTC" FontFamily="{DynamicResource FontMono}" FontSize="10" Foreground="{DynamicResource BrushTextFaint}" HorizontalAlignment="Right"/>
                                         </Grid>
                                     </Border>
-                                    <TextBlock x:Name="TxtShellLogContent" Text="[INITIALIZING] Memeriksa registri HKCU\Software\Classes... Siap digunakan." FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="#10B981" LineHeight="18" TextWrapping="Wrap"/>
+                                    <TextBlock x:Name="TxtShellLogContent" Text="[INITIALIZING] Memeriksa registri HKCU\Software\Classes... Siap digunakan." FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="#10B981" LineHeight="18" TextWrapping="Wrap"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -972,10 +973,10 @@
                                 </Grid.ColumnDefinitions>
                                 <Border Grid.Column="0" Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="5" Height="34" Padding="12,0" Margin="0,0,8,0">
                                     <Grid VerticalAlignment="Center">
-                                        <TextBlock Text="••••••••••••••••••••" FontFamily="JetBrains Mono, monospace" FontSize="12" Foreground="{DynamicResource BrushTextPrimary}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="••••••••••••••••••••" FontFamily="{DynamicResource FontMono}" FontSize="12" Foreground="{DynamicResource BrushTextPrimary}" VerticalAlignment="Center"/>
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                             <Path Data="{StaticResource IconCheckCircle}" Fill="#10B981" Width="12" Height="12" Stretch="Uniform" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                            <TextBlock Text="Tersimpan" FontFamily="JetBrains Mono, monospace" FontSize="10" Foreground="#10B981" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Tersimpan" FontFamily="{DynamicResource FontMono}" FontSize="10" Foreground="#10B981" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </Grid>
                                 </Border>
@@ -1100,10 +1101,10 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock x:Name="TxtCloudProviderName" Text="Google Drive" FontSize="13" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
                                                     <Border x:Name="BorderCloudStatusBadge" Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="3" Padding="6,1" Margin="8,0,0,0" VerticalAlignment="Center">
-                                                        <TextBlock x:Name="TxtCloudStatusBadge" Text="Terhubung" FontFamily="JetBrains Mono, monospace" FontSize="9.5" Foreground="{DynamicResource BrushTextMuted}"/>
+                                                        <TextBlock x:Name="TxtCloudStatusBadge" Text="Terhubung" FontFamily="{DynamicResource FontMono}" FontSize="9.5" Foreground="{DynamicResource BrushTextMuted}"/>
                                                     </Border>
                                                 </StackPanel>
-                                                <TextBlock x:Name="TxtCloudAccountOrPath" Text="user.vault@gmail.com" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextMuted}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock x:Name="TxtCloudAccountOrPath" Text="user.vault@gmail.com" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextMuted}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
                                             </StackPanel>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -1148,7 +1149,7 @@
                                             <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="4" Height="30" Padding="10,0" Margin="0,0,6,0" MaxWidth="240">
                                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                                     <Path Data="{StaticResource IconFolderOpen}" Fill="{DynamicResource BrushTextMuted}" Width="12" Height="12" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                                    <TextBlock x:Name="TxtCloudBackupDestination" Text="/WhatInsides Backup Vault" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                    <TextBlock x:Name="TxtCloudBackupDestination" Text="/WhatInsides Backup Vault" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                                 </StackPanel>
                                             </Border>
                                             <Button x:Name="BtnCloudChangeFolder" Click="BtnCloudChangeFolder_Click" Style="{StaticResource StarkSecondaryButton}" Content="Ubah Folder" Height="30" Padding="10,0" FontSize="11.5"/>
@@ -1204,7 +1205,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0" Text="Algoritma Enkripsi" FontSize="12" Foreground="{DynamicResource BrushTextMuted}"/>
-                                            <TextBlock Grid.Column="1" Text="AES-256-CBC" FontFamily="JetBrains Mono, monospace" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                            <TextBlock Grid.Column="1" Text="AES-256-CBC" FontFamily="{DynamicResource FontMono}" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
                                         </Grid>
                                     </Border>
                                     <Border Padding="14,11" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="0,0,0,1">
@@ -1214,7 +1215,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0" Text="Derivasi Kunci" FontSize="12" Foreground="{DynamicResource BrushTextMuted}"/>
-                                            <TextBlock Grid.Column="1" Text="PBKDF2 (SHA-256)" FontFamily="JetBrains Mono, monospace" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                            <TextBlock Grid.Column="1" Text="PBKDF2 (SHA-256)" FontFamily="{DynamicResource FontMono}" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
                                         </Grid>
                                     </Border>
                                     <Border Padding="14,11" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="0,0,0,1">
@@ -1224,7 +1225,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0" Text="Penyimpanan Kunci" FontSize="12" Foreground="{DynamicResource BrushTextMuted}"/>
-                                            <TextBlock Grid.Column="1" Text="Windows DPAPI" FontFamily="JetBrains Mono, monospace" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                            <TextBlock Grid.Column="1" Text="Windows DPAPI" FontFamily="{DynamicResource FontMono}" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
                                         </Grid>
                                     </Border>
                                     <Border Padding="14,11">
@@ -1234,7 +1235,7 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Grid.Column="0" Text="Penghapusan Berkas" FontSize="12" Foreground="{DynamicResource BrushTextMuted}"/>
-                                            <TextBlock Grid.Column="1" Text="DoD 5220.22-M" FontFamily="JetBrains Mono, monospace" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                            <TextBlock Grid.Column="1" Text="DoD 5220.22-M" FontFamily="{DynamicResource FontMono}" FontSize="12" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
                                         </Grid>
                                     </Border>
                                 </StackPanel>
@@ -1247,7 +1248,7 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="Perubahan akan diterapkan secara langsung ke sistem." FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,16,0"/>
+                                    <TextBlock Grid.Column="0" Text="Perubahan akan diterapkan secara langsung ke sistem." FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextFaint}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,16,0"/>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                                         <Button x:Name="BtnResetSettings" Click="BtnResetSettings_Click" Style="{StaticResource StarkGhostButton}" Content="Reset ke Standar" Height="34" Padding="14,0" Margin="0,0,10,0" FontSize="12"/>
                                         <Button x:Name="BtnSaveSettings" Click="BtnSaveSettings_Click" Style="{StaticResource StarkPrimaryButton}" Height="34" Padding="18,0">
@@ -1326,13 +1327,13 @@
                                 <Grid>
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock x:Name="TxtModalTargetName" Text="Laporan_Keuangan_2024" FontWeight="Medium" FontSize="12.5" Foreground="{DynamicResource BrushTextPrimary}"/>
-                                        <TextBlock x:Name="TxtModalTargetPath" Text="D:\Finance\Laporan_Keuangan_2024" FontFamily="JetBrains Mono, monospace" FontSize="11" Foreground="{DynamicResource BrushTextFaint}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="TxtModalTargetPath" Text="D:\Finance\Laporan_Keuangan_2024" FontFamily="{DynamicResource FontMono}" FontSize="11" Foreground="{DynamicResource BrushTextFaint}" Margin="0,2,0,0" TextTrimming="CharacterEllipsis"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
 
                             <!-- Side-by-Side Mode Picker -->
-                            <TextBlock Text="PILIH MODE PROTEKSI" FontFamily="JetBrains Mono, monospace" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextFaint}" Margin="0,0,0,8"/>
+                            <TextBlock Text="PILIH MODE PROTEKSI" FontFamily="{DynamicResource FontMono}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource BrushTextFaint}" Margin="0,0,0,8"/>
 
                             <Grid Margin="0,0,0,16">
                                 <Grid.ColumnDefinitions>
@@ -1350,7 +1351,7 @@
                                                 <TextBlock Text="Mode Cepat" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource BrushTextPrimary}"/>
                                             </StackPanel>
                                             <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="3" Padding="4,1" HorizontalAlignment="Right">
-                                                <TextBlock Text="&lt;0.1s" FontFamily="JetBrains Mono, monospace" FontSize="9" Foreground="{DynamicResource BrushTextSecondary}"/>
+                                                <TextBlock Text="&lt;0.1s" FontFamily="{DynamicResource FontMono}" FontSize="9" Foreground="{DynamicResource BrushTextSecondary}"/>
                                             </Border>
                                         </Grid>
                                         <TextBlock Text="Penguncian instan tanpa proses duplikasi atau pemindahan. Folder langsung hilang dari Explorer." FontSize="11" Foreground="{DynamicResource BrushTextMuted}" TextWrapping="Wrap" LineHeight="16"/>
@@ -1366,7 +1367,7 @@
                                                 <TextBlock Text="Mode Enkripsi" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource BrushTextPrimary}"/>
                                             </StackPanel>
                                             <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="3" Padding="4,1" HorizontalAlignment="Right">
-                                                <TextBlock Text="AES-256" FontFamily="JetBrains Mono, monospace" FontSize="9" Foreground="{DynamicResource BrushTextSecondary}"/>
+                                                <TextBlock Text="AES-256" FontFamily="{DynamicResource FontMono}" FontSize="9" Foreground="{DynamicResource BrushTextSecondary}"/>
                                             </Border>
                                         </Grid>
                                         <TextBlock Text="Enkripsi penuh untuk keamanan dokumen sensitif. Mustahil dibobol sekalipun hard disk dicopot." FontSize="11" Foreground="{DynamicResource BrushTextMuted}" TextWrapping="Wrap" LineHeight="16"/>

@@ -715,7 +715,7 @@ public partial class MainWindow : Window
         var tbCount = new TextBlock
         {
             Text = $"({count})",
-            FontFamily = new FontFamily("JetBrains Mono, monospace"),
+            FontFamily = (FontFamily)FindResource("FontMono"),
             FontSize = 9.5,
             Foreground = (Brush)FindResource("BrushTextFaint"),
             Margin = new Thickness(4, 0, 0, 0),

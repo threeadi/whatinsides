@@ -92,6 +92,7 @@ whatinsides/
 ├── Assets/                 # Ikon vektor GoogleIcons, app.ico, app.png
 ├── Controls/               # Komponen custom (SpeedGraphControl, dll)
 ├── Converters/             # WPF Value Converters
+├── Fonts/                  # Bundled TrueType Fonts (Geist, Geist Mono, JetBrains Mono)
 ├── Models/                 # Model data (AppSettings, LockedItemModel, dll)
 ├── Services/               # Layanan inti:
 │   ├── CryptoEngine.cs         # Enkripsi & dekripsi AES-256
