@@ -27,4 +27,5 @@ public class AppSettings
     public string CloudBackupFolder { get; set; } = string.Empty;
     public bool CloudSyncWifiOnly { get; set; } = true;
     public bool CloudZeroKnowledgeE2E { get; set; } = true;
+    public bool CloudBackupCredentialsVault { get; set; } = true;
 }

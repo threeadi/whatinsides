@@ -16,6 +16,7 @@ public partial class SettingsView : UserControl
     private Func<string>? _getCurrentPassword;
     private Action<string>? _setCurrentPassword;
     private LockRegistryService? _registryService;
+    private CredentialVaultService? _credentialService;
 
     public event Action<string, string>? ToastRequested;
     public event Action<string>? PasswordChangedSuccess;
@@ -29,12 +30,14 @@ public partial class SettingsView : UserControl
         SettingsManager settingsManager,
         Func<string> getCurrentPassword,
         Action<string> setCurrentPassword,
-        LockRegistryService? registryService = null)
+        LockRegistryService? registryService = null,
+        CredentialVaultService? credentialService = null)
     {
         _settingsManager = settingsManager;
         _getCurrentPassword = getCurrentPassword;
         _setCurrentPassword = setCurrentPassword;
         _registryService = registryService;
+        _credentialService = credentialService;
 
         InitSettingsUi();
     }
@@ -82,8 +85,16 @@ public partial class SettingsView : UserControl
         if (ChkCloudAutoUpload != null) ChkCloudAutoUpload.IsChecked = _settingsManager.Settings.CloudAutoUpload;
         if (ChkCloudWifiOnly != null) ChkCloudWifiOnly.IsChecked = _settingsManager.Settings.CloudSyncWifiOnly;
         if (ChkCloudZeroKnowledge != null) ChkCloudZeroKnowledge.IsChecked = _settingsManager.Settings.CloudZeroKnowledgeE2E;
+        if (ChkCloudBackupCredentials != null) ChkCloudBackupCredentials.IsChecked = _settingsManager.Settings.CloudBackupCredentialsVault;
 
         UpdateCloudSyncUi();
+    }
+
+    private void ChkCloudBackupCredentials_Click(object sender, RoutedEventArgs e)
+    {
+        if (_settingsManager == null) return;
+        _settingsManager.Settings.CloudBackupCredentialsVault = ChkCloudBackupCredentials?.IsChecked == true;
+        _settingsManager.SaveSettings();
     }
 
     private void ChkExplorerIntegration_Click(object sender, RoutedEventArgs e)
@@ -386,6 +397,19 @@ public partial class SettingsView : UserControl
         }
 
         int copiedCount = 0;
+
+        // 1. Sync Encrypted Password Manager Vault (.wivault)
+        if (_settingsManager.Settings.CloudBackupCredentialsVault && _credentialService != null)
+        {
+            string pass = _getCurrentPassword?.Invoke() ?? string.Empty;
+            if (!string.IsNullOrEmpty(pass))
+            {
+                var (success, _, count, _) = await _credentialService.BackupToGoogleDriveAsync(pass);
+                if (success) copiedCount++;
+            }
+        }
+
+        // 2. Sync Locked Container Files (.wisafe)
         if (_registryService?.LockedItems != null)
         {
             foreach (var item in _registryService.LockedItems)
@@ -405,7 +429,7 @@ public partial class SettingsView : UserControl
             }
         }
 
-        return (copiedCount, targetDir, $"{copiedCount} snapshot kontainer terenkripsi berhasil dicadangkan.");
+        return (copiedCount, targetDir, $"{copiedCount} snapshot kontainer & brankas kata sandi berhasil dicadangkan.");
     }
 
     private async void BtnSyncDriveNow_Click(object sender, RoutedEventArgs e)

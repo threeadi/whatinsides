@@ -17,6 +17,10 @@
 * **Lampiran Berkas Terenkripsi (Secure File Attachments)**:
   * Melampirkan dokumen penting (PDF kontrak, kunci privat `.pem`/`.key`, foto KTP, backup seed) langsung ke akun terkait.
   * Dienkripsi penuh dengan AES-256 sebelum disimpan di storage lokal dan dapat diekspor kembali kapan saja.
+* **Cadangan Terenkripsi (.wivault) & Sinkronisasi Google Drive**:
+  * **Zero-Knowledge Cloud Backup**: Mencadangkan seluruh akun, catatan, TOTP, dan lampiran berkas terenkripsi langsung ke Google Drive (`/WhatInsides Backup Vault/Credentials`).
+  * **Arsip Mandiri `.wivault`**: Ekspor snapshot brankas terenkripsi AES-256 dengan PBKDF2 (120.000 iterasi) yang kebal sadap untuk backup offline atau migrasi antar perangkat.
+  * **Proteksi Riwayat Clipboard (`Win + V`)**: Menerapkan flag `CanIncludeInClipboardHistory = 0` dan `CanUploadToCloudClipboard = 0` agar kata sandi tidak pernah tercatat di riwayat clipboard Windows maupun sinkronisasi cloud Microsoft.
 
 ### 2. Autentikasi Biometrik Windows Hello
 * **Sign In dengan Biometrik**: Masuk ke aplikasi dan otorisasi akses menggunakan **Sidik Jari (Fingerprint)**, **Pengenalan Wajah (Face Recognition)**, atau **Windows Hello PIN** via WinRT API native.
@@ -73,6 +77,13 @@ wi run -- npm start
 wi lock C:\Proyek\data.json -p Rahasia123!
 wi unlock C:\Proyek\data.json.wisafe -p Rahasia123!
 wi list
+
+# Mencadangkan brankas ke Google Drive atau arsip berkas terenkripsi
+wi backup-vault --cloud
+wi backup-vault --dest ./my_vault_backup.wivault -p Rahasia123!
+
+# Memulihkan brankas dari berkas cadangan terenkripsi
+wi restore-vault ./my_vault_backup.wivault -p Rahasia123!
 ```
 
 ---
@@ -168,7 +179,7 @@ whatinsides/
 │   ├── Dashboard/          # FileVaultView
 │   └── Settings/           # SettingsView
 ├── cli/                    # WhatInsides CLI Companion Tool (wi.exe)
-├── tests/                  # xUnit Test Suite komprehensif (231 passing tests)
+├── tests/                  # xUnit Test Suite komprehensif (240 passing tests)
 ├── WhatInsides.csproj      # File proyek .NET 10 WPF
 └── WhatInsides.slnx        # Solution file modern XML
 ```

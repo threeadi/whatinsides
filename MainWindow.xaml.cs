@@ -63,6 +63,7 @@ public partial class MainWindow : Window
         _settingsManager = new SettingsManager();
         _trayService = new TrayIconService(this, RestoreFromTray, LockVaultFromTray, LockVaultAndExit, TriggerQuickAutofillFromTray);
         _credentialService = new CredentialVaultService();
+        _credentialService.SettingsManager = _settingsManager;
         _passwordGenerator = new PasswordGeneratorService();
         _totpService = new TotpService();
         _autoTypeService = new AutoTypeService(_credentialService, _settingsManager, () => _currentPassword, _totpService);
@@ -92,7 +93,7 @@ public partial class MainWindow : Window
             _currentPassword = newP;
             ViewDashboard.Refresh();
             ViewCredentials.Refresh();
-        }, _registryService);
+        }, _registryService, _credentialService);
         ViewSettings.ToastRequested += ShowSettingsToast;
         ViewSettings.PasswordChangedSuccess += newP =>
         {

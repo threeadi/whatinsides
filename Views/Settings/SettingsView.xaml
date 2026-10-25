@@ -327,7 +327,22 @@
                             </Grid>
                         </Border>
 
-                        <!-- Row 5: E2E Encryption -->
+                        <!-- Row 5: Backup Password Vault to Cloud -->
+                        <Border Padding="0,14" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="0,0,0,1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,20,0" VerticalAlignment="Center">
+                                    <TextBlock Text="Cadangkan Brankas Kata Sandi (.wivault) ke Google Drive" FontSize="13" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}" TextWrapping="Wrap"/>
+                                    <TextBlock Text="Otomatis membuat snapshot arsip terenkripsi AES-256 seluruh kata sandi &amp; lampiran ke folder Google Drive." FontSize="12" Foreground="{DynamicResource BrushTextMuted}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" x:Name="ChkCloudBackupCredentials" Click="ChkCloudBackupCredentials_Click" Style="{StaticResource StarkToggleSwitch}" IsChecked="True" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Row 6: E2E Encryption -->
                         <Border Padding="0,14">
                             <Grid>
                                 <Grid.ColumnDefinitions>

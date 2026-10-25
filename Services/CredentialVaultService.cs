@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using WhatInsides.Models;
 
 namespace WhatInsides.Services;
@@ -13,6 +17,8 @@ public class CredentialVaultService
     private readonly string _attachmentsDir;
     private readonly List<CredentialItem> _items = new();
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
+
+    public SettingsManager? SettingsManager { get; set; }
 
     public CredentialVaultService(string? customStoragePath = null, string? customAttachmentsDir = null)
     {
@@ -662,4 +668,229 @@ public class CredentialVaultService
             Notes = "Steam Guard Mobile terhubung."
         });
     }
+
+    #region Encrypted Vault Backup & Cloud Sync (Google Drive)
+
+    /// <summary>
+    /// Creates a standalone, military-grade encrypted backup (.wivault) containing all credentials and attachments,
+    /// encrypted with AES-256 and PBKDF2 using the specified password.
+    /// </summary>
+    public async Task<string> CreateEncryptedBackupAsync(
+        string targetFilePath,
+        string password,
+        IProgress<double>? progress = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrEmpty(password))
+            throw new ArgumentException("Password backup tidak boleh kosong.", nameof(password));
+
+        string? dir = Path.GetDirectoryName(targetFilePath);
+        if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+
+        // 1. Pack items and attachments into memory ZIP
+        using var zipMemory = new MemoryStream();
+        using (var archive = new ZipArchive(zipMemory, ZipArchiveMode.Create, leaveOpen: true))
+        {
+            // vault.json
+            var vaultEntry = archive.CreateEntry("vault.json", CompressionLevel.Optimal);
+            using (var vs = vaultEntry.Open())
+            using (var writer = new StreamWriter(vs, Encoding.UTF8))
+            {
+                string json = JsonSerializer.Serialize(_items, JsonOptions);
+                await writer.WriteAsync(json.AsMemory(), cancellationToken);
+            }
+
+            // manifest.json
+            var manifestEntry = archive.CreateEntry("backup_manifest.json", CompressionLevel.Fastest);
+            using (var ms = manifestEntry.Open())
+            using (var writer = new StreamWriter(ms, Encoding.UTF8))
+            {
+                var manifest = new
+                {
+                    Version = "2.0",
+                    CreatedAt = DateTime.UtcNow,
+                    ItemCount = _items.Count,
+                    ActiveCount = _items.Count(x => !x.IsDeleted),
+                    AttachmentsCount = _items.Sum(x => x.Attachments.Count),
+                    SourceMachine = Environment.MachineName
+                };
+                await writer.WriteAsync(JsonSerializer.Serialize(manifest, JsonOptions).AsMemory(), cancellationToken);
+            }
+
+            // attachments
+            foreach (var item in _items)
+            {
+                foreach (var att in item.Attachments)
+                {
+                    string attPath = Path.Combine(_attachmentsDir, att.EncryptedFileName);
+                    if (File.Exists(attPath))
+                    {
+                        var attEntry = archive.CreateEntry($"attachments/{att.EncryptedFileName}", CompressionLevel.NoCompression);
+                        using var entryStream = attEntry.Open();
+                        using var fs = new FileStream(attPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                        await fs.CopyToAsync(entryStream, cancellationToken);
+                    }
+                }
+            }
+        }
+
+        // 2. Encrypt ZIP stream into target file
+        zipMemory.Position = 0;
+        using var fileOut = new FileStream(targetFilePath, FileMode.Create, FileAccess.Write, FileShare.None);
+        await CryptoEngine.EncryptStreamAsync(zipMemory, fileOut, password, progress, cancellationToken);
+
+        return targetFilePath;
+    }
+
+    /// <summary>
+    /// Restores credentials and attachments from an encrypted .wivault backup file.
+    /// </summary>
+    public async Task<(int RestoredCount, int AttachmentsRestored, string Message)> RestoreEncryptedBackupAsync(
+        string backupFilePath,
+        string password,
+        bool replaceExisting = false,
+        IProgress<double>? progress = null,
+        CancellationToken cancellationToken = default)
+    {
+        if (!File.Exists(backupFilePath))
+            throw new FileNotFoundException("Berkas cadangan tidak ditemukan.", backupFilePath);
+
+        using var fileIn = new FileStream(backupFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        using var zipMemory = new MemoryStream();
+
+        // 1. Decrypt into memory ZIP stream
+        await CryptoEngine.DecryptStreamAsync(fileIn, zipMemory, password, progress, cancellationToken);
+        zipMemory.Position = 0;
+
+        // 2. Unpack archive
+        using var archive = new ZipArchive(zipMemory, ZipArchiveMode.Read);
+        var vaultEntry = archive.GetEntry("vault.json")
+            ?? throw new InvalidDataException("Arsip cadangan tidak memiliki berkas vault.json.");
+
+        List<CredentialItem>? backupItems;
+        using (var stream = vaultEntry.Open())
+        using (var reader = new StreamReader(stream, Encoding.UTF8))
+        {
+            string json = await reader.ReadToEndAsync(cancellationToken);
+            backupItems = JsonSerializer.Deserialize<List<CredentialItem>>(json, JsonOptions);
+        }
+
+        if (backupItems == null || backupItems.Count == 0)
+        {
+            return (0, 0, "Berkas cadangan kosong.");
+        }
+
+        // 3. Extract attachments
+        int attRestored = 0;
+        foreach (var entry in archive.Entries)
+        {
+            if (entry.FullName.StartsWith("attachments/", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(entry.Name))
+            {
+                string targetAtt = Path.Combine(_attachmentsDir, entry.Name);
+                using var inEntry = entry.Open();
+                using var outAtt = new FileStream(targetAtt, FileMode.Create, FileAccess.Write, FileShare.None);
+                await inEntry.CopyToAsync(outAtt, cancellationToken);
+                attRestored++;
+            }
+        }
+
+        // 4. Merge or Replace items
+        int restoredCount = 0;
+        if (replaceExisting)
+        {
+            _items.Clear();
+            _items.AddRange(backupItems);
+            restoredCount = backupItems.Count;
+        }
+        else
+        {
+            foreach (var bItem in backupItems)
+            {
+                int existingIndex = _items.FindIndex(x => x.Id == bItem.Id || (x.Title.Equals(bItem.Title, StringComparison.OrdinalIgnoreCase) && x.Username.Equals(bItem.Username, StringComparison.OrdinalIgnoreCase)));
+                if (existingIndex >= 0)
+                {
+                    if (bItem.UpdatedAt >= _items[existingIndex].UpdatedAt)
+                    {
+                        _items[existingIndex] = bItem;
+                    }
+                }
+                else
+                {
+                    _items.Add(bItem);
+                    restoredCount++;
+                }
+            }
+        }
+
+        Save();
+        return (restoredCount, attRestored, $"Berhasil memulihkan {restoredCount} item kredensial dan {attRestored} lampiran berkas.");
+    }
+
+    /// <summary>
+    /// Backs up the credential vault directly to the detected Google Drive folder.
+    /// </summary>
+    public async Task<(bool Success, string BackupPath, int ItemCount, string Message)> BackupToGoogleDriveAsync(
+        string password,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            string gdriveFolder = ResolveGoogleDriveVaultPath();
+            Directory.CreateDirectory(gdriveFolder);
+
+            string fileName = $"WhatInsides_Credentials_{DateTime.Now:yyyyMMdd_HHmmss}.wivault";
+            string backupPath = Path.Combine(gdriveFolder, fileName);
+            string latestPath = Path.Combine(gdriveFolder, "WhatInsides_Credentials_Latest.wivault");
+
+            await CreateEncryptedBackupAsync(backupPath, password, null, cancellationToken);
+
+            try
+            {
+                File.Copy(backupPath, latestPath, true);
+            }
+            catch { }
+
+            int activeCount = _items.Count(x => !x.IsDeleted);
+            return (true, backupPath, activeCount, $"Cadangan terenkripsi ({activeCount} item) berhasil disimpan ke Google Drive: {fileName}");
+        }
+        catch (Exception ex)
+        {
+            return (false, string.Empty, 0, $"Gagal mencadangkan ke Google Drive: {ex.Message}");
+        }
+    }
+
+    public string ResolveGoogleDriveVaultPath()
+    {
+        var providers = CloudDetectionService.DetectAvailableProviders();
+        var gdrive = providers.FirstOrDefault(p => p.Name == "Google Drive");
+
+        string? configured = SettingsManager?.Settings.CloudBackupFolder;
+        string baseDir = !string.IsNullOrEmpty(configured)
+            ? configured
+            : (gdrive != null && gdrive.IsDetected && !string.IsNullOrEmpty(gdrive.Path)
+                ? Path.Combine(gdrive.Path, "WhatInsides Backup Vault")
+                : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "WhatInsides Google Drive Vault"));
+
+        return Path.Combine(baseDir, "Credentials");
+    }
+
+    public List<FileInfo> GetGoogleDriveBackups()
+    {
+        try
+        {
+            string dir = ResolveGoogleDriveVaultPath();
+            if (!Directory.Exists(dir)) return new List<FileInfo>();
+
+            return new DirectoryInfo(dir)
+                .GetFiles("*.wivault")
+                .OrderByDescending(f => f.LastWriteTime)
+                .ToList();
+        }
+        catch
+        {
+            return new List<FileInfo>();
+        }
+    }
+
+    #endregion
 }

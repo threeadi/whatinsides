@@ -1119,6 +1119,108 @@ public partial class CredentialView : UserControl, IDisposable
         }
     }
 
+    private async void BtnQuickCloudBackup_Click(object sender, RoutedEventArgs e)
+    {
+        await PerformGoogleDriveBackupAsync();
+    }
+
+    private async void MenuItemBackupGoogleDrive_Click(object sender, RoutedEventArgs e)
+    {
+        await PerformGoogleDriveBackupAsync();
+    }
+
+    private async Task PerformGoogleDriveBackupAsync()
+    {
+        string pass = _getPassword?.Invoke() ?? string.Empty;
+        if (string.IsNullOrEmpty(pass))
+        {
+            MessageBox.Show("Kata sandi master diperlukan untuk mengenkripsi cadangan.", "Autentikasi Diperlukan", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        try
+        {
+            var (success, bPath, count, msg) = await _credentialService.BackupToGoogleDriveAsync(pass);
+            if (success)
+            {
+                ToastRequested?.Invoke("Google Drive Dicadangkan", msg);
+            }
+            else
+            {
+                MessageBox.Show(msg, "Peringatan Cadangan Cloud", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Gagal mencadangkan: {ex.Message}", "Error Cadangan", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private async void MenuItemBackupEncrypted_Click(object sender, RoutedEventArgs e)
+    {
+        string pass = _getPassword?.Invoke() ?? string.Empty;
+        if (string.IsNullOrEmpty(pass))
+        {
+            MessageBox.Show("Kata sandi master diperlukan untuk mengenkripsi cadangan.", "Autentikasi Diperlukan", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        var sfd = new Microsoft.Win32.SaveFileDialog
+        {
+            Title = "Buat Cadangan Brankas Terenkripsi",
+            Filter = "WhatInsides Encrypted Vault (*.wivault)|*.wivault|All Files (*.*)|*.*",
+            FileName = $"whatinsides_backup_{DateTime.Now:yyyyMMdd_HHmmss}.wivault"
+        };
+
+        if (sfd.ShowDialog() == true)
+        {
+            try
+            {
+                await _credentialService.CreateEncryptedBackupAsync(sfd.FileName, pass);
+                ToastRequested?.Invoke("Cadangan Dibuat", $"Arsip terenkripsi berhasil disimpan ke: {Path.GetFileName(sfd.FileName)}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gagal membuat cadangan: {ex.Message}", "Error Cadangan", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    private async void MenuItemRestoreBackup_Click(object sender, RoutedEventArgs e)
+    {
+        var ofd = new Microsoft.Win32.OpenFileDialog
+        {
+            Title = "Pilih Berkas Cadangan Terenkripsi (.wivault)",
+            Filter = "WhatInsides Encrypted Vault (*.wivault)|*.wivault|All Files (*.*)|*.*",
+            Multiselect = false
+        };
+
+        if (ofd.ShowDialog() == true)
+        {
+            string pass = _getPassword?.Invoke() ?? string.Empty;
+            if (string.IsNullOrEmpty(pass))
+            {
+                MessageBox.Show("Kata sandi master diperlukan untuk mendekripsi cadangan.", "Autentikasi Diperlukan", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                var (restoredCount, attRestored, msg) = await _credentialService.RestoreEncryptedBackupAsync(ofd.FileName, pass, replaceExisting: false);
+                LoadCredentials();
+                ToastRequested?.Invoke("Pemulihan Berhasil", msg);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("Kata sandi master tidak cocok dengan berkas cadangan ini.", "Akses Ditolak", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gagal memulihkan cadangan: {ex.Message}", "Error Pemulihan", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
     private void MenuItemExportJson_Click(object sender, RoutedEventArgs e)
     {
         var sfd = new Microsoft.Win32.SaveFileDialog

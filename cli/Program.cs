@@ -43,6 +43,8 @@ public class Program
                 "attach" => await HandleAttachAsync(cmdArgs),
                 "files" or "attachments" => HandleFiles(cmdArgs),
                 "export-file" or "export-attachment" => await HandleExportFileAsync(cmdArgs),
+                "backup-vault" or "backup" => await HandleBackupVaultAsync(cmdArgs),
+                "restore-vault" or "restore" => await HandleRestoreVaultAsync(cmdArgs),
                 _ => HandleUnknownCommand(command)
             };
         }
@@ -68,6 +70,8 @@ COMMANDS:
   unlock <path>                Decrypt and restore a locked .wisafe file
   list, ls                     Display all registered locked files and folders
   get <query>                  Retrieve credentials from the secure vault (Biometrics)
+  backup-vault [--cloud]       Create encrypted backup (.wivault) or backup to Google Drive
+  restore-vault <path>         Restore credentials & attachments from encrypted .wivault
   totp <query>                 Generate a real-time 2FA / TOTP authentication token
   run -- <command> [args]      Authorize with biometrics & inject secrets into any CLI
   attach <query> <file-path>   Encrypt and attach a file to an existing credential
@@ -589,6 +593,94 @@ OPTIONS:
         await CredentialSvc.ExportAttachmentAsync(target.Id, attachment.Id, outputPath, password);
         ConsoleHelper.WriteSuccess($"[OK] Berkas berhasil didekripsi dan diekspor ke: {outputPath}");
         return 0;
+    }
+
+    private static string? GetOptionValue(string[] args, string opt1, string opt2)
+    {
+        for (int i = 0; i < args.Length; i++)
+        {
+            if ((args[i].Equals(opt1, StringComparison.OrdinalIgnoreCase) || args[i].Equals(opt2, StringComparison.OrdinalIgnoreCase)) && i + 1 < args.Length)
+            {
+                return args[i + 1];
+            }
+        }
+        return null;
+    }
+
+    private static async Task<int> HandleBackupVaultAsync(string[] args)
+    {
+        bool toGoogleDrive = args.Any(a => a.Equals("--cloud", StringComparison.OrdinalIgnoreCase) || a.Equals("--gdrive", StringComparison.OrdinalIgnoreCase));
+        string? destArg = GetOptionValue(args, "--dest", "-o");
+        string? passArg = GetOptionValue(args, "--password", "-p");
+
+        string pass = ResolveMasterPassword(passArg);
+        if (!SettingsMgr.VerifyPassword(pass))
+        {
+            ConsoleHelper.WriteError("Master password salah!");
+            return 1;
+        }
+
+        if (toGoogleDrive)
+        {
+            ConsoleHelper.WriteInfo("Mencadangkan brankas ke Google Drive...");
+            var (success, bPath, count, msg) = await CredentialSvc.BackupToGoogleDriveAsync(pass);
+            if (success)
+            {
+                ConsoleHelper.WriteSuccess($"[OK] {msg}");
+                ConsoleHelper.WriteInfo($"Lokasi: {bPath}");
+                return 0;
+            }
+            else
+            {
+                ConsoleHelper.WriteError($"[GAGAL] {msg}");
+                return 1;
+            }
+        }
+        else
+        {
+            string targetPath = !string.IsNullOrEmpty(destArg)
+                ? destArg
+                : Path.Combine(Environment.CurrentDirectory, $"WhatInsides_Backup_{DateTime.Now:yyyyMMdd_HHmmss}.wivault");
+
+            ConsoleHelper.WriteInfo($"Membuat cadangan terenkripsi (.wivault) ke: {targetPath}...");
+            await CredentialSvc.CreateEncryptedBackupAsync(targetPath, pass);
+            ConsoleHelper.WriteSuccess($"[OK] Cadangan berhasil dibuat: {targetPath}");
+            return 0;
+        }
+    }
+
+    private static async Task<int> HandleRestoreVaultAsync(string[] args)
+    {
+        string? backupPath = args.FirstOrDefault(a => !a.StartsWith("-"));
+        string? passArg = GetOptionValue(args, "--password", "-p");
+        bool replace = args.Any(a => a.Equals("--replace", StringComparison.OrdinalIgnoreCase));
+
+        if (string.IsNullOrEmpty(backupPath))
+        {
+            ConsoleHelper.WriteError("Harap tentukan jalur berkas cadangan (.wivault) yang akan dipulihkan!");
+            Console.WriteLine("Contoh: wi restore-vault \"C:\\Backup\\WhatInsides_Backup.wivault\"");
+            return 1;
+        }
+
+        string pass = ResolveMasterPassword(passArg);
+        ConsoleHelper.WriteInfo($"Mendekripsi dan memulihkan dari: {backupPath}...");
+
+        try
+        {
+            var (restoredCount, attRestored, msg) = await CredentialSvc.RestoreEncryptedBackupAsync(backupPath, pass, replace);
+            ConsoleHelper.WriteSuccess($"[OK] {msg}");
+            return 0;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            ConsoleHelper.WriteError("Password salah! Berkas cadangan tidak dapat didekripsi.");
+            return 1;
+        }
+        catch (Exception ex)
+        {
+            ConsoleHelper.WriteError($"Gagal memulihkan cadangan: {ex.Message}");
+            return 1;
+        }
     }
 
     private static async Task<bool> AuthenticateUserAsync(string actionDescription, string? passArg = null)
