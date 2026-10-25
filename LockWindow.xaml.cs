@@ -203,7 +203,12 @@ public partial class LockWindow : Window
         }
         else
         {
-            TxtError.Text = $"Verifikasi Windows Hello dibatalkan: {resultMsg}";
+            TxtError.Text = resultMsg.StartsWith("PIN", StringComparison.OrdinalIgnoreCase)
+                         || resultMsg.StartsWith("Kunci", StringComparison.OrdinalIgnoreCase)
+                         || resultMsg.StartsWith("Error", StringComparison.OrdinalIgnoreCase)
+                         || resultMsg.StartsWith("Kode", StringComparison.OrdinalIgnoreCase)
+                ? resultMsg
+                : $"Verifikasi Windows Hello dibatalkan: {resultMsg}";
             BorderError.Visibility = Visibility.Visible;
         }
     }

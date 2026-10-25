@@ -77,10 +77,24 @@ public static class BiometricService
         }
         catch (Exception ex)
         {
-            string detail = string.IsNullOrWhiteSpace(ex.Message)
-                ? $"Kode 0x{ex.HResult:X8} ({ex.GetType().Name})"
-                : ex.Message;
-            return (false, $"Error saat memanggil Windows Hello: {detail}");
+            uint hresult = (uint)ex.HResult;
+            string detail;
+
+            if (hresult == 0xD000A002 || (ex.Message?.Contains("D000A002", StringComparison.OrdinalIgnoreCase) ?? false))
+            {
+                detail = "PIN Windows Hello di sistem Windows belum aktif atau bermasalah (Error 0xD000A002 - NGC Container). Silakan masuk menggunakan Kata Sandi Master, atau atur ulang PIN di Windows Settings > Accounts > Sign-in options.";
+            }
+            else if (hresult == 0x80090016 || hresult == 0x80090029)
+            {
+                detail = "Kunci otentikasi Windows Hello tidak ditemukan pada TPM/sistem. Silakan masuk menggunakan Kata Sandi Master.";
+            }
+            else
+            {
+                string message = string.IsNullOrWhiteSpace(ex.Message) ? $"Kode 0x{hresult:X8} ({ex.GetType().Name})" : ex.Message;
+                detail = $"Error saat memanggil Windows Hello: {message}";
+            }
+
+            return (false, detail);
         }
     }
 }
