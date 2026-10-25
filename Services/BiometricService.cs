@@ -7,6 +7,12 @@ namespace WhatInsides.Services;
 
 public static class BiometricService
 {
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetActiveWindow();
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetForegroundWindow();
+
     [DllImport("kernel32.dll", ExactSpelling = true)]
     private static extern IntPtr GetConsoleWindow();
 
@@ -35,27 +41,46 @@ public static class BiometricService
     }
 
     /// <summary>
-    /// Prompts the user with native Windows Hello (Fingerprint / Face / PIN) dialog.
+    /// Prompts the user with native Windows Hello (Fingerprint / Face / PIN) dialog attached to the window.
     /// Returns true if verified successfully.
     /// </summary>
-    public static async Task<(bool Success, string Message)> RequestConsentAsync(string prompt = "WhatInsides: Otorisasi akses ke brankas rahasia")
+    public static async Task<(bool Success, string Message)> RequestConsentAsync(
+        string prompt = "WhatInsides: Otorisasi akses ke brankas rahasia",
+        IntPtr windowHandle = default)
     {
         try
         {
-            var verificationResult = await UserConsentVerifier.RequestVerificationAsync(prompt);
+            IntPtr hwnd = windowHandle;
+            if (hwnd == IntPtr.Zero) hwnd = GetActiveWindow();
+            if (hwnd == IntPtr.Zero) hwnd = GetForegroundWindow();
+            if (hwnd == IntPtr.Zero) hwnd = GetConsoleWindow();
+
+            UserConsentVerificationResult verificationResult;
+            if (hwnd != IntPtr.Zero)
+            {
+                verificationResult = await UserConsentVerifierInterop.RequestVerificationForWindowAsync(hwnd, prompt);
+            }
+            else
+            {
+                verificationResult = await UserConsentVerifier.RequestVerificationAsync(prompt);
+            }
+
             return verificationResult switch
             {
                 UserConsentVerificationResult.Verified => (true, "Verifikasi biometrik berhasil."),
                 UserConsentVerificationResult.Canceled => (false, "Verifikasi dibatalkan oleh pengguna."),
                 UserConsentVerificationResult.DeviceNotPresent => (false, "Sensor biometrik tidak tersedia."),
-                UserConsentVerificationResult.NotConfiguredForUser => (false, "Windows Hello belum dikonfigurasi."),
+                UserConsentVerificationResult.NotConfiguredForUser => (false, "Windows Hello belum dikonfigurasi di Windows Settings."),
                 UserConsentVerificationResult.DeviceBusy => (false, "Sensor biometrik sedang sibuk."),
                 _ => (false, "Verifikasi biometrik gagal.")
             };
         }
         catch (Exception ex)
         {
-            return (false, $"Error saat memanggil Windows Hello: {ex.Message}");
+            string detail = string.IsNullOrWhiteSpace(ex.Message)
+                ? $"Kode 0x{ex.HResult:X8} ({ex.GetType().Name})"
+                : ex.Message;
+            return (false, $"Error saat memanggil Windows Hello: {detail}");
         }
     }
 }

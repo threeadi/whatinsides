@@ -144,10 +144,14 @@
 
                     <!-- Error Alert Banner -->
                     <Border x:Name="BorderError" Background="#20EF4444" BorderBrush="{DynamicResource BrushDanger}" BorderThickness="1" CornerRadius="6" Padding="10,7" Margin="0,10,0,0" Visibility="Collapsed">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Path Data="{StaticResource IconAlertCircle}" Fill="{DynamicResource BrushDanger}" Width="13" Height="13" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="TxtError" Text="Kata sandi master salah! Silakan coba lagi." FontSize="11.5" Foreground="{DynamicResource BrushDanger}" VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Path Grid.Column="0" Data="{StaticResource IconAlertCircle}" Fill="{DynamicResource BrushDanger}" Width="13" Height="13" Stretch="Uniform" Margin="0,2,8,0" VerticalAlignment="Top"/>
+                            <TextBlock Grid.Column="1" x:Name="TxtError" Text="Kata sandi master salah! Silakan coba lagi." FontSize="11.5" Foreground="{DynamicResource BrushDanger}" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        </Grid>
                     </Border>
                 </StackPanel>
 

@@ -177,7 +177,8 @@ public partial class LockWindow : Window
             return;
         }
 
-        var (success, resultMsg) = await BiometricService.RequestConsentAsync("WhatInsides: Buka Kunci Brankas");
+        var handle = new System.Windows.Interop.WindowInteropHelper(this).EnsureHandle();
+        var (success, resultMsg) = await BiometricService.RequestConsentAsync("WhatInsides: Buka Kunci Brankas", handle);
         if (success)
         {
             string? pass = _settingsManager.GetBiometricUnlockedPassword();
