@@ -184,6 +184,7 @@ public partial class MainWindow : Window
         var source = HwndSource.FromHwnd(handle);
         source?.AddHook(WndProc);
         _autoTypeService.RegisterGlobalHotkeys(handle);
+        ScreenCaptureProtectionService.ApplyProtection(handle, _settingsManager.Settings.PreventScreenCapture);
     }
 
     private const int WM_GETMINMAXINFO = 0x0024;

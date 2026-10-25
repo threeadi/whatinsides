@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using WhatInsides.Services;
 
 namespace WhatInsides.Views.Credentials;
 
@@ -18,7 +19,11 @@ public partial class SshAccessPromptWindow : Window
         TxtKeyTitle.Text = string.IsNullOrWhiteSpace(keyTitle) ? "GitHub SSH Key" : keyTitle;
         TxtKeyFingerprint.Text = $"{keyType} • {fingerprint}";
 
-        Loaded += (s, e) => BtnApprove.Focus();
+        Loaded += (s, e) =>
+        {
+            ScreenCaptureProtectionService.ApplyProtection(this, true);
+            BtnApprove.Focus();
+        };
     }
 
     private void BtnApprove_Click(object sender, RoutedEventArgs e)

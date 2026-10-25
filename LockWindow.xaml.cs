@@ -34,6 +34,7 @@ public partial class LockWindow : Window
         ThemeManager.ThemeChanged += OnThemeChanged;
         OnThemeChanged(ThemeManager.CurrentTheme);
 
+        ScreenCaptureProtectionService.ApplyProtection(this, _settingsManager.Settings.PreventScreenCapture);
         PbMasterPassword.Focus();
         UpdatePlaceholder();
     }

@@ -75,6 +75,8 @@ public partial class QuickAutofillWindow : Window
 
     private void QuickAutofillWindow_Loaded(object sender, RoutedEventArgs e)
     {
+        ScreenCaptureProtectionService.ApplyProtection(this, _settingsManager.Settings.PreventScreenCapture);
+
         if (_isLocked)
         {
             PbQuickUnlock.Focus();

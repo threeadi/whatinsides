@@ -21,6 +21,7 @@ public class AppSettings
     public string KdfAlgorithm { get; set; } = "Argon2id";
     public string Theme { get; set; } = "Dark";
     public int ClipboardAutoClearSeconds { get; set; } = 30; // 0 = never, 15, 30, 60
+    public bool PreventScreenCapture { get; set; } = true;
 
     public bool CloudAutoUpload { get; set; } = true;
     public string CloudBackupFolder { get; set; } = string.Empty;

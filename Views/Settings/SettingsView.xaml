@@ -162,6 +162,26 @@
                             </Grid>
                         </Border>
 
+                        <!-- Toggle: Anti-Screenshot & Screen Recording Protection -->
+                        <Border Padding="0,14" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="0,0,0,1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,20,0" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="Proteksi Layar &amp; Anti-Screenshot" FontSize="13" FontWeight="Medium" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                        <Border Background="#10B981" CornerRadius="3" Padding="5,1" Margin="8,0,0,0">
+                                            <TextBlock Text="Rekomendasi Privasi" FontFamily="{DynamicResource FontInter}" FontSize="10" FontWeight="SemiBold" Foreground="#FFFFFF"/>
+                                        </Border>
+                                    </StackPanel>
+                                    <TextBlock Text="Cegah tangkapan layar (PrtScn, Snipping Tool), screen sharing rapat (Zoom, Teams, Discord), dan malware perekam layar menangkap jendela aplikasi." FontSize="12" Foreground="{DynamicResource BrushTextMuted}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <CheckBox Grid.Column="1" x:Name="ChkPreventScreenCapture" Style="{StaticResource StarkToggleSwitch}" IsChecked="True" HorizontalAlignment="Right" VerticalAlignment="Center" Click="ChkPreventScreenCapture_Click"/>
+                            </Grid>
+                        </Border>
+
                         <!-- Row: Desktop Autofill & Global Hotkeys -->
                         <Border Padding="0,14" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="0,0,0,1">
                             <Grid>

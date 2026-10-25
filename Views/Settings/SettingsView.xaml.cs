@@ -70,6 +70,7 @@ public partial class SettingsView : UserControl
 
         ChkAutoRelockSettings.IsChecked = _settingsManager.Settings.AutoLockOnMinimize;
         ChkLockOnSleep.IsChecked = _settingsManager.Settings.LockOnSleep;
+        if (ChkPreventScreenCapture != null) ChkPreventScreenCapture.IsChecked = _settingsManager.Settings.PreventScreenCapture;
         ChkSystemTray.IsChecked = _settingsManager.Settings.MinimizeToTray;
 
         if (ChkExplorerIntegration != null)
@@ -103,6 +104,26 @@ public partial class SettingsView : UserControl
         {
             ShellContextMenuService.UnregisterContextMenu();
             ToastRequested?.Invoke("Integrasi Explorer Nonaktif", "Menu klik kanan WhatInsides dilepas dari Windows Explorer.");
+        }
+    }
+
+    private void ChkPreventScreenCapture_Click(object sender, RoutedEventArgs e)
+    {
+        if (_settingsManager == null) return;
+
+        bool enable = ChkPreventScreenCapture?.IsChecked == true;
+        _settingsManager.Settings.PreventScreenCapture = enable;
+        _settingsManager.SaveSettings();
+
+        ScreenCaptureProtectionService.ApplyToAllWindows(enable);
+
+        if (enable)
+        {
+            ToastRequested?.Invoke("Proteksi Layar Aktif", "Jendela aplikasi kini terproteksi dari screenshot dan screen recording.");
+        }
+        else
+        {
+            ToastRequested?.Invoke("Proteksi Layar Dinonaktifkan", "Jendela aplikasi dapat ditangkap kembali oleh screenshot.");
         }
     }
 
@@ -448,6 +469,7 @@ public partial class SettingsView : UserControl
         CbClipboardAutoClear.SelectedIndex = 1;
         ChkAutoRelockSettings.IsChecked = true;
         ChkLockOnSleep.IsChecked = true;
+        if (ChkPreventScreenCapture != null) ChkPreventScreenCapture.IsChecked = true;
         ChkSystemTray.IsChecked = false;
         if (ChkExplorerIntegration != null) ChkExplorerIntegration.IsChecked = ShellContextMenuService.IsContextMenuRegistered();
 
@@ -459,6 +481,8 @@ public partial class SettingsView : UserControl
         _settingsManager.Settings.ClipboardAutoClearSeconds = 30;
         _settingsManager.Settings.AutoLockOnMinimize = true;
         _settingsManager.Settings.LockOnSleep = true;
+        _settingsManager.Settings.PreventScreenCapture = true;
+        ScreenCaptureProtectionService.ApplyToAllWindows(true);
         _settingsManager.Settings.MinimizeToTray = false;
 
         _settingsManager.Settings.CloudAutoUpload = true;
@@ -499,6 +523,12 @@ public partial class SettingsView : UserControl
 
         _settingsManager.Settings.AutoLockOnMinimize = ChkAutoRelockSettings.IsChecked == true;
         _settingsManager.Settings.LockOnSleep = ChkLockOnSleep.IsChecked == true;
+        if (ChkPreventScreenCapture != null)
+        {
+            bool enable = ChkPreventScreenCapture.IsChecked == true;
+            _settingsManager.Settings.PreventScreenCapture = enable;
+            ScreenCaptureProtectionService.ApplyToAllWindows(enable);
+        }
         _settingsManager.Settings.MinimizeToTray = ChkSystemTray.IsChecked == true;
 
         if (ChkCloudAutoUpload != null) _settingsManager.Settings.CloudAutoUpload = ChkCloudAutoUpload.IsChecked == true;

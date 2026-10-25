@@ -41,6 +41,7 @@
 * Mendukung pemindaian ACL dan verifikasi integritas HMAC berkas terkunci.
 
 ### 7. Otomatisasi & Proteksi Sesi
+* **Proteksi Layar & Anti-Screenshot**: Proteksi tingkat OS via Win32 `SetWindowDisplayAffinity(WDA_EXCLUDEFROMCAPTURE)`. Mencegah Snipping Tool, screenshot PrtScn, screen share rapat (Zoom, Teams, Discord, Google Meet), serta malware perekam layar menangkap jendela brankas.
 * **Inactivity Auto-Lock**: Memantau aktivitas keyboard dan mouse via Win32 API `GetLastInputInfo`. Vault otomatis terkunci jika pengguna tidak aktif (1, 5, 15 menit).
 * **Auto-Relock on Sleep / Win+L**: Mengunci vault secara otomatis saat laptop/PC masuk mode tidur (*suspend*) atau layar terkunci.
 * **Auto-Relock on Minimize**: Mengunci vault seketika saat jendela diminimalkan ke taskbar atau System Tray.
@@ -81,7 +82,8 @@ wi list
 | Komponen | Spesifikasi Teknis |
 | :--- | :--- |
 | **Algoritma Simetris** | AES-256 (CBC / GCM) & XChaCha20-Poly1305 |
-| **Derivasi Kunci (KDF)** | PBKDF2 dengan HMAC-SHA256 (100.000+ iterasi) & Argon2id |
+| **Derivasi KDF** | PBKDF2 dengan HMAC-SHA256 (100.000+ iterasi) & Argon2id |
+| **Proteksi Layar** | Win32 `SetWindowDisplayAffinity` (`WDA_EXCLUDEFROMCAPTURE` / `WDA_MONITOR`) |
 | **Biometrik** | Windows Hello WinRT (`KeyCredentialManager` & `UserConsentVerifier`) |
 | **Penyimpanan Kunci** | Windows DPAPI (*Data Protection API*) terikat ke akun pengguna |
 | **Penghancuran Berkas** | Standar DoD 5220.22-M Sanitization (Multi-Pass Overwrite) |
@@ -120,7 +122,7 @@ dotnet run --project cli/WhatInsides.Cli.csproj -- status
 ```
 
 ### Menjalankan Pengujian & Coverage (Unit Tests)
-Proyek ini memiliki pengujian komprehensif sebanyak **231 tests** dengan tingkat kelulusan 100% dan cakupan >80% pada seluruh Core Services:
+Proyek ini memiliki pengujian komprehensif sebanyak **236 tests** dengan tingkat kelulusan 100% dan cakupan >80% pada seluruh Core Services:
 
 ```bash
 # Menjalankan semua unit tests
