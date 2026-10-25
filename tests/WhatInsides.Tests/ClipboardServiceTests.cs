@@ -49,7 +49,8 @@ public class ClipboardServiceTests
         {
             try
             {
-                ClipboardService.Copy("TestSecret123", "TestPassword", 0);
+                ClipboardService.Copy("TestSecret123", "TestPassword", 0, excludeFromHistory: true);
+                ClipboardService.Copy("TestPlain456", "TestPlain", 0, excludeFromHistory: false);
                 ClipboardService.ClearNow();
             }
             catch
