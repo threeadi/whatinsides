@@ -9,11 +9,20 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/Icons.xaml" />
+                <ResourceDictionary Source="Themes/BrandIcons.xaml" />
                 <ResourceDictionary Source="Themes/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <conv:CategoryToGeometryConverter x:Key="CatToGeometryConv" />
             <conv:CategoryToColorConverter x:Key="CatToColorConv" />
+            <conv:CredentialCategoryToGeometryConverter x:Key="CredCatToGeoConv" />
+            <conv:CredentialCategoryToColorConverter x:Key="CredCatToColorConv" />
+            <conv:CredentialToIconGeometryConverter x:Key="CredToIconGeoConv" />
+            <conv:CredentialToIconBrushConverter x:Key="CredToIconBrushConv" />
+            <conv:CredentialHasCustomIconConverter x:Key="CredHasCustomIconConv" />
+            <conv:CredentialHasSvgIconConverter x:Key="CredHasSvgIconConv" />
+            <conv:CredentialCustomIconSourceConverter x:Key="CredCustomIconSourceConv" />
+            <conv:BoolToStarGeometryConverter x:Key="BoolToStarConv" />
             <conv:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisConv" />
             <BooleanToVisibilityConverter x:Key="BoolToVisConv" />
         </ResourceDictionary>

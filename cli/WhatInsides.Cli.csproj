@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>wi</AssemblyName>
+    <RootNamespace>WhatInsides.Cli</RootNamespace>
+    <StartupObject>WhatInsides.Cli.Program</StartupObject>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhatInsides.csproj" />
+  </ItemGroup>
+
+</Project>

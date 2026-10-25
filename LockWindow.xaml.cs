@@ -166,16 +166,18 @@ public partial class LockWindow : Window
         }
     }
 
-    private void BtnWindowsHello_Click(object sender, RoutedEventArgs e)
+    private async void BtnWindowsHello_Click(object sender, RoutedEventArgs e)
     {
-        // Windows Hello biometric authentication for local vault unlock
-        var result = MessageBox.Show(
-            "Meminta verifikasi biometrik Windows Hello (PIN / Sidik Jari)...\n\nApakah verifikasi biometrik berhasil?",
-            "Windows Hello Biometric Authentication",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Information);
+        var (available, checkMsg) = await BiometricService.CheckAvailabilityAsync();
+        if (!available)
+        {
+            TxtError.Text = $"Windows Hello tidak tersedia: {checkMsg}";
+            BorderError.Visibility = Visibility.Visible;
+            return;
+        }
 
-        if (result == MessageBoxResult.Yes)
+        var (success, resultMsg) = await BiometricService.RequestConsentAsync("WhatInsides: Buka Kunci Brankas");
+        if (success)
         {
             string? pass = _settingsManager.GetBiometricUnlockedPassword();
             if (string.IsNullOrEmpty(pass) && _settingsManager.VerifyPassword("admin123"))
@@ -185,6 +187,7 @@ public partial class LockWindow : Window
 
             if (!string.IsNullOrEmpty(pass) && _settingsManager.VerifyPassword(pass))
             {
+                BorderError.Visibility = Visibility.Collapsed;
                 var mainWindow = new MainWindow(pass);
                 Application.Current.MainWindow = mainWindow;
                 mainWindow.Show();
@@ -192,13 +195,13 @@ public partial class LockWindow : Window
             }
             else
             {
-                TxtError.Text = "Kunci biometrik tidak tersedia. Masukkan password secara manual.";
+                TxtError.Text = "Kunci biometrik belum terdaftar. Masukkan password secara manual.";
                 BorderError.Visibility = Visibility.Visible;
             }
         }
         else
         {
-            TxtError.Text = "Verifikasi Windows Hello dibatalkan atau gagal.";
+            TxtError.Text = $"Verifikasi Windows Hello dibatalkan: {resultMsg}";
             BorderError.Visibility = Visibility.Visible;
         }
     }

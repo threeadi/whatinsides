@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/cli/">
+    <Project Path="cli/WhatInsides.Cli.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WhatInsides.Tests/WhatInsides.Tests.csproj" />
+  </Folder>
+  <Project Path="WhatInsides.csproj" />
+</Solution>

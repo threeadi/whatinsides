@@ -16,6 +16,11 @@ public static class ThemeManager
 
     public static event Action<AppTheme>? ThemeChanged;
 
+    public static void ToggleTheme()
+    {
+        SetTheme(CurrentTheme == AppTheme.Light ? AppTheme.Dark : AppTheme.Light);
+    }
+
     public static void SetTheme(AppTheme theme, bool save = true)
     {
         CurrentTheme = theme;

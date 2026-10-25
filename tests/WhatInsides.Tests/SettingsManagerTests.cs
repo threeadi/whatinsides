@@ -61,6 +61,7 @@ public class SettingsManagerTests
         {
             var sm = new SettingsManager(tempSettings);
             sm.Settings.AutoLockMinutes = 15;
+            sm.Settings.ClipboardAutoClearSeconds = 60;
             sm.Settings.AutoLockOnMinimize = true;
             sm.Settings.LockOnSleep = true;
             sm.Settings.MinimizeToTray = true;
@@ -76,6 +77,7 @@ public class SettingsManagerTests
             // Create new instance which re-reads from disk
             var reloaded = new SettingsManager(tempSettings);
             Assert.Equal(15, reloaded.Settings.AutoLockMinutes);
+            Assert.Equal(60, reloaded.Settings.ClipboardAutoClearSeconds);
             Assert.True(reloaded.Settings.AutoLockOnMinimize);
             Assert.True(reloaded.Settings.LockOnSleep);
             Assert.True(reloaded.Settings.MinimizeToTray);

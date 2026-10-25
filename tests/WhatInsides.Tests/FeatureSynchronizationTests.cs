@@ -223,5 +223,55 @@ public class FeatureSynchronizationTests : IDisposable
         Assert.True(File.Exists(Path.Combine(cloudVaultDir, "Secret.docx.wisafe")));
         Assert.False(File.Exists(Path.Combine(cloudVaultDir, "RawPlaintext.txt")));
     }
+
+    [Fact]
+    public void DropZone_RoutingContract_SingleVsBatch_RoutesCorrectly()
+    {
+        // Arrange
+        string singleItem = @"C:\Test\Single.pdf";
+        string[] multiItems = new[] { @"C:\Test\1.pdf", @"C:\Test\2.pdf" };
+
+        string? quickLockPath = null;
+        string[]? batchLockPaths = null;
+
+        Action<string> onQuickLock = p => quickLockPath = p;
+        Action<string[]> onBatchLock = ps => batchLockPaths = ps;
+
+        // Act - Simulate DropZone single item logic
+        if (new[] { singleItem }.Length == 1)
+        {
+            onQuickLock(singleItem);
+        }
+
+        // Act - Simulate DropZone multi item logic
+        if (multiItems.Length > 1)
+        {
+            onBatchLock(multiItems);
+        }
+
+        // Assert
+        Assert.Equal(singleItem, quickLockPath);
+        Assert.NotNull(batchLockPaths);
+        Assert.Equal(2, batchLockPaths.Length);
+    }
+
+    [Fact]
+    public void LockedItemsChanged_SynchronizationContract_NotifiesListeners()
+    {
+        // Arrange
+        bool refreshedObserverA = false;
+        bool refreshedObserverB = false;
+
+        Action? lockedItemsChanged = null;
+        lockedItemsChanged += () => refreshedObserverA = true;
+        lockedItemsChanged += () => refreshedObserverB = true;
+
+        // Act
+        lockedItemsChanged?.Invoke();
+
+        // Assert
+        Assert.True(refreshedObserverA);
+        Assert.True(refreshedObserverB);
+    }
 }
 

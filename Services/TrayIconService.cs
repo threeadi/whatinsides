@@ -12,15 +12,17 @@ public sealed class TrayIconService : IDisposable
     private readonly Action _onRestore;
     private readonly Action _onLock;
     private readonly Action _onExit;
+    private readonly Action? _onAutofill;
     private Forms.NotifyIcon? _notifyIcon;
     private bool _isDisposed = false;
 
-    public TrayIconService(Window window, Action onRestore, Action onLock, Action onExit)
+    public TrayIconService(Window window, Action onRestore, Action onLock, Action onExit, Action? onAutofill = null)
     {
         _window = window;
         _onRestore = onRestore;
         _onLock = onLock;
         _onExit = onExit;
+        _onAutofill = onAutofill;
 
         InitializeTrayIcon();
     }
@@ -82,6 +84,13 @@ public sealed class TrayIconService : IDisposable
             var itemOpen = new Forms.ToolStripMenuItem("Buka Dashboard");
             itemOpen.Click += (s, e) => _window.Dispatcher.Invoke(_onRestore);
             contextMenu.Items.Add(itemOpen);
+
+            if (_onAutofill != null)
+            {
+                var itemAutofill = new Forms.ToolStripMenuItem("Autofill Cepat (Ctrl+Alt+A)");
+                itemAutofill.Click += (s, e) => _window.Dispatcher.Invoke(_onAutofill);
+                contextMenu.Items.Add(itemAutofill);
+            }
 
             var itemLock = new Forms.ToolStripMenuItem("Kunci Vault");
             itemLock.Click += (s, e) => _window.Dispatcher.Invoke(_onLock);
